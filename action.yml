@@ -9,6 +9,11 @@ name: Run testcase
 # Description of the action
 description: This action is able to run a test case based on the eXtreme Design methodology. 
 
+# Action icon and color
+branding:
+ icon: 'box'
+ color: 'blue'
+
 # The event that triggers the action.
 on: push
  
