@@ -1,0 +1,62 @@
+# This is a workflow that is able to run a test case.
+# Trigger: A commit to the test case directory. 
+# Input: The user input file to get the name of the cc that we are testing. 
+# Output: The execution of a test case. 
+
+# Name of the action
+name: Run testcase
+
+# Description of the action
+description: This action is able to run a test case based on the eXtreme Design methodology. 
+
+# The event that triggers the action.
+on: push
+ 
+jobs:
+
+# This workflow contains a job called "run-test"
+  run-test:
+  
+  # The type of runner that the job will run on.
+    runs-on: ubuntu-latest
+    
+    # Check out the repository where the action is going to be executed on.
+    steps:
+      - name: Checkout V2
+        uses: actions/checkout@v2
+        
+      - name: XDTesting Setup Environment 
+        uses: FiorelaCiroku/XDTesting-Setup-Environment@v1.0.0
+      
+      - name: Run CQ test
+        run: |
+            cd ontology-network
+            cd musical-performance-ontology
+            while read -r line; do
+            line="$line"
+            # echo "CC is $line"
+            cd $line
+            base="https://raw.githubusercontent.com/"
+            base1=$(git config --get remote.origin.url | sed 's/.*\/\([^ ]*\/[^.]*\).*/\1/')
+            echo "$base2"
+            base2="/main/ontology-network/musical-performance-ontology/"
+            CQbase="/SPARQLUnitTest/CQTestCase/"
+            echo "$CQtestcase"
+            CQtestcase="$base$base1$base2$line$CQbase"
+            # echo "Test case directory url is $CQtestcase"
+            cd SPARQLUnitTest
+            cd CQTestCase
+            for file in *.ttl
+            do 
+             echo " The file is $file"
+             testcaseURL="$CQtestcase$file"
+             echo "Test case URL is $testcaseURL"
+             cd ..
+             cd ..
+             cd ..
+             cd ..
+             cd ..
+             java -jar OWLUnit-0.3.2.jar -c $testcaseURL
+            done          
+            done < UserInput.txt
+            
